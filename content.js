@@ -1,4 +1,37 @@
-function modifyMessenger() {
+var frenchDictionary = {};
+frenchDictionary['search'] = 'Rechercher dans Messenger';
+frenchDictionary['discussions'] = 'Discussions';
+frenchDictionary['communities'] = 'Communautés';
+frenchDictionary['marketplace'] = 'Marketplace';
+frenchDictionary['attachment'] = 'pièce jointe';
+frenchDictionary['groupcall'] = 'Appel vocal';
+frenchDictionary['publication'] = 'publication';
+
+var englishDictionary = {}
+englishDictionary['search'] = 'Search';
+englishDictionary['discussions'] = 'Chats';
+englishDictionary['communities'] = 'Communities';
+englishDictionary['attachment'] = 'attachment';
+englishDictionary['groupcall'] = 'Group audio call';
+englishDictionary['publication'] = 'publication';
+englishDictionary['marketplace'] = 'Marketplace';
+
+
+function modifyMessenger(englishDictionary) {
+	var lang = document.documentElement.getAttribute('lang');
+
+	switch (lang) {
+	  case 'en':
+		var dictionary = englishDictionary;
+		break;
+	  case 'fr':
+		var dictionary = frenchDictionary;
+		break;
+	  default:
+		var dictionary = englishDictionary;
+	}
+
+	
 	document.title = 'document';
 	changeCssProperty('--header-height', '0px');
 	changeCssProperty('--wash', 'rgb(0,0,0);');
@@ -9,35 +42,38 @@ function modifyMessenger() {
 	tagRemover('div','role','banner');
 	tagRemover('svg','role','presentation');
 	changeSVG();
-	tagRemover('input','placeholder','Rechercher dans Messenger');
 	tagRemoverCss('.facebook-logo-class');
 	tagRemoverCss('.call-logo-class');
 	tagRemoverCss('.call-logo-class');
-	removeGrandParentFromSpan(6,"Discussions");
-	removeGrandParentFromSpan(4,"Communautés");
-	removeGrandParentFromSpan(6,"Marketplace");
 	removeThemeBackgrounds();
-	removeReels();
-	removeCalls();
 	updateColors();
+	
+	removeReels(dictionary['attachment']);
+	removeCalls(dictionary['groupcall']);
+	
+	tagRemover('input','placeholder',dictionary['search']);
+	removeGrandParentFromSpan('h1',6,dictionary['discussions']);
+	removeGrandParentFromSpan('span',4,dictionary['communities']);
+	removeGrandParentFromSpan('span',6,dictionary['marketplace']);
+	removePublicationView(dictionary['publication']);
 }
 
-function removeReels(){
-	document.querySelectorAll('a[aria-label*="pièce jointe"]').forEach(link => {
+function removeReels(attachement){
+	document.querySelectorAll('a[aria-label*="'+attachement+'"]').forEach(link => {
 		link.remove();
 	});
 }
 
-function removeCalls(){
-	document.querySelectorAll('div[aria-label*="Appel vocal"]').forEach(div => {
+function removeCalls(calls){
+	document.querySelectorAll('div[aria-label*="'+calls+'"]').forEach(div => {
 	  var newDiv = document.createElement('div');
 	  newDiv.textContent = 'Appel vocal';
 	  div.parentNode.replaceChild(newDiv, div);
 	});
 }
 
-function removePublicationView(){
-	document.querySelectorAll('a[aria-label*="publication"]').forEach(publication => {
+function removePublicationView(publication){
+	document.querySelectorAll('a[aria-label*="'+publication+'"]').forEach(publication => {
 		publication.remove();
 	});
 }
@@ -92,10 +128,10 @@ function changeCssProperty(propertyName, value){
 	document.documentElement.style.setProperty(propertyName,value);
 }
 
-function removeGrandParentFromSpan(level,txt){
-  document.querySelectorAll('span').forEach(function(span) {
-	  if (span.textContent.trim() === txt) {
-		let parent = span;
+function removeGrandParentFromSpan(tag,level,txt){
+  document.querySelectorAll(tag).forEach( currentTag => {
+	  if (currentTag.textContent.trim() === txt) {
+		let parent = currentTag;
 		for (let i = 0; i < level; i++) {
 		  if (parent.parentNode) {
 			parent = parent.parentNode;
@@ -129,7 +165,7 @@ function updateColors() {
           var value = rule.style.getPropertyValue(property);
           if (colorsToReplace.includes(value)) {
             // Replace the color with 'none'
-            rule.style.setProperty(property, 'none', 'important'); // 'important' to override existing styles
+            rule.style.setProperty(property, 'none', 'important');
           }
         }
       }
@@ -137,8 +173,8 @@ function updateColors() {
   }
 }
 
-modifyMessenger();
+modifyMessenger(englishDictionary);
 
-var observer = new MutationObserver(function(mutations) { modifyMessenger(); });
+var observer = new MutationObserver(function(mutations) { modifyMessenger(englishDictionary); });
 var config = { childList: true, subtree: true };
 observer.observe(document.body, config);
