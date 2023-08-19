@@ -56,11 +56,19 @@ function modifyMessenger(englishDictionary) {
 	removeGrandParentFromSpan('span',4,dictionary['communities']);
 	removeGrandParentFromSpan('span',6,dictionary['marketplace']);
 	removePublicationView(dictionary['publication']);
+	
+	removeAllVideos();
+}
+
+function removeAllVideos(attachement){
+	document.querySelectorAll('video').forEach(video => {
+		video.style.display = 'none';
+	});
 }
 
 function removeReels(attachement){
 	document.querySelectorAll('a[aria-label*="'+attachement+'"]').forEach(link => {
-		link.remove();
+		link.style.display = 'none';
 	});
 }
 
@@ -74,7 +82,7 @@ function removeCalls(calls){
 
 function removePublicationView(publication){
 	document.querySelectorAll('a[aria-label*="'+publication+'"]').forEach(publication => {
-		publication.remove();
+		publication.style.display = 'none';
 	});
 }
 
@@ -87,17 +95,17 @@ function changeSVG(){
 
 function removeAllImages(){
   var images = document.querySelectorAll('img');
-  images.forEach(img => img.remove());
+  images.forEach(img => img.style.display = 'none');
 }
 
 function tagRemoverCss(selector){
   var divs = document.querySelectorAll(selector);
-  divs.forEach(div => div.remove());
+  divs.forEach(div => div.style.display = 'none');
 }
 
 function tagRemover(tag, attribute, value){
   var divs = document.querySelectorAll(tag + '[' + attribute + '="' + value + '"]');
-  divs.forEach(div => div.remove());
+  divs.forEach(div => div.style.display = 'none');
 }
 
 function removeThemeBackgrounds(){
@@ -138,7 +146,7 @@ function removeGrandParentFromSpan(tag,level,txt){
 		  }
 		}
 		if (parent && parent.parentNode) {
-		  parent.remove();
+		  parent.style.display = 'none';
 		}
 	  }
 	});
