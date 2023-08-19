@@ -138,7 +138,7 @@ function removeGrandParentFromSpan(tag,level,txt){
 		  }
 		}
 		if (parent && parent.parentNode) {
-		  parent.parentNode.removeChild(parent);
+		  parent.remove();
 		}
 	  }
 	});
