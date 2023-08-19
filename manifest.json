@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Discreet Messenger",
+  "version": "1.0",
+  "description": "Reshapes Messenger's appearance",
+  "content_scripts": [
+    {
+      "matches": ["*://www.facebook.com/messages/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": ["activeTab"]
+}
