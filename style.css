@@ -1,0 +1,29 @@
+body {
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.text {
+  color: #151515;
+  font-weight: bold;
+}
+
+#toggle-button {
+  background-color: #151515;
+  color: #d5d4d4;
+  padding: 10px;
+}
+
+.content {
+  text-align: center;
+  padding: 20px;
+  padding-top: 0px;
+}
+
+.info {
+  font-size: small;
+}
+
+#status-image {
+  max-width: 90%;
+}
